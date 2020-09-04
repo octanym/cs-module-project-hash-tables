@@ -25,7 +25,7 @@ class HashTable:
         self.capacity = capacity
         if capacity < MIN_CAPACITY:
             self.capacity = MIN_CAPACITY
-        self.available = [None] * self.capacity
+        self.storage = [None]*self.capacity
         self.stored = 0
 
     def get_num_slots(self):
@@ -63,7 +63,12 @@ class HashTable:
 
         Implement this, and/or FNV-1.
         """
-        # Your code here
+        hash = 5381  # magic prime number
+        input_to_bytes = key.encode()
+
+        for byte in input_to_bytes:
+            hash = ((hash << 5) + hash) + byte
+        return hash
 
     def hash_index(self, key):
         """
@@ -81,7 +86,8 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        hash = self.hash_index(key)
+        self.storage[hash] = HashTableEntry(key, value)
 
     def delete(self, key):
         """
@@ -91,7 +97,11 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        hash = self.hash_index(key)
+        if self.storage[hash] is not None:
+            self.storage[hash] = None
+        else:
+            print("the key could not be found")
 
     def get(self, key):
         """
@@ -101,7 +111,11 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        hash = self.hash_index(key)
+        if self.storage[hash] is not None:
+            return self.storage[hash].value
+        else:
+            return None
 
     def resize(self, new_capacity):
         """
