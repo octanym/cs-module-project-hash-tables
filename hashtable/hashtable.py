@@ -155,8 +155,18 @@ class HashTable:
         Implement this.
         """
         hash = self.hash_index(key)
-        if self.storage[hash] is not None:
-            return self.storage[hash].value
+        if self.storage[hash]:
+            current = self.storage[hash]
+
+            while current.key is not key and current.next:
+                current = current.next
+
+            if not current.next:
+                return current.value
+
+            else:
+                return current.value
+
         else:
             return None
 
