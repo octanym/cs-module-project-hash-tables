@@ -87,7 +87,27 @@ class HashTable:
         Implement this.
         """
         hash = self.hash_index(key)
-        self.storage[hash] = HashTableEntry(key, value)
+
+        if not self.storage[hash]:
+            self.storage[hash] = HashTableEntry(key, value)
+            self.item_stored += 1
+
+        else:
+
+            current = self.storage[hash]
+
+            while current.key != key and current.next:
+                current = current.next
+
+            if current.key == key:
+                current.value = value
+
+            else:
+                current.next = HashTableEntry(key, value)
+                self.item_stored += 1
+
+        if self.get_load_factor() > 0.7:
+            self.resize(self.capacity*2)
 
     def delete(self, key):
         """
