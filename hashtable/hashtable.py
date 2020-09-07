@@ -118,10 +118,33 @@ class HashTable:
         Implement this.
         """
         hash = self.hash_index(key)
-        if self.storage[hash] is not None:
-            self.storage[hash] = None
-        else:
+
+        current = self.storage[hash]
+
+        if not current:
             print("the key could not be found")
+
+        elif not current.next:
+            self.storage[hash] = None
+            self.stored -= 1
+
+        else:
+            prev = None
+
+            while current.key != key and current.next:
+                prev = current
+                current = current.next
+
+            if not current.next:
+                prev.next = None
+                self.stored -= 1
+
+            else:
+                prev.next = current.next
+                self.stored -= 1
+
+        if self.get_load_factor() < 0.2:
+            self.resize(self.capacity // 2)
 
     def get(self, key):
         """
