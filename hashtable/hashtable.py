@@ -90,7 +90,7 @@ class HashTable:
 
         if not self.storage[hash]:
             self.storage[hash] = HashTableEntry(key, value)
-            self.item_stored += 1
+            self.stored += 1
 
         else:
 
@@ -104,7 +104,7 @@ class HashTable:
 
             else:
                 current.next = HashTableEntry(key, value)
-                self.item_stored += 1
+                self.stored += 1
 
         if self.get_load_factor() > 0.7:
             self.resize(self.capacity*2)
